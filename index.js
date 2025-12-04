@@ -155,6 +155,71 @@ function GuestList() {
     )
   );
 
+  /** === Form for adding a new party === */
+function PartyForm() {
+  const $section = document.createElement("section");
+
+  const $h2 = document.createElement("h2");
+  $h2.textContent = "Add a new party";
+  $section.appendChild($h2);
+
+  const $form = document.createElement("form");
+
+  // Name
+  const nameInput = document.createElement("input");
+  nameInput.placeholder = "Name";
+  nameInput.required = true;
+  $form.appendChild(nameInput);
+
+  // Description
+  const descInput = document.createElement("input");
+  descInput.placeholder = "Description";
+  descInput.required = true;
+  $form.appendChild(descInput);
+
+  // Date
+  const dateInput = document.createElement("input");
+  dateInput.type = "date";
+  dateInput.required = true;
+  $form.appendChild(dateInput);
+
+  // Location
+  const locInput = document.createElement("input");
+  locInput.placeholder = "Location";
+  locInput.required = true;
+  $form.appendChild(locInput);
+
+  // Button
+  const btn = document.createElement("button");
+  btn.type = "submit";
+  btn.textContent = "Add party";
+  $form.appendChild(btn);
+
+  // Submit handler
+  $form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const isoDate = new Date(dateInput.value).toISOString();
+
+    const newParty = {
+      name: nameInput.value,
+      description: descInput.value,
+      date: isoDate,
+      location: locInput.value,
+    };
+
+    createParty(newParty);
+
+    nameInput.value = "";
+    descInput.value = "";
+    dateInput.value = "";
+    locInput.value = "";
+  });
+
+  $section.appendChild($form);
+  return $section;
+}
+
   // Simple components can also be created anonymously:
   const $guests = guestsAtParty.map((guest) => {
     const $guest = document.createElement("li");
