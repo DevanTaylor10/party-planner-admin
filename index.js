@@ -139,8 +139,15 @@ function SelectedParty() {
     </time>
     <address>${selectedParty.location}</address>
     <p>${selectedParty.description}</p>
+
+<button class="delete-btn">Delete Party</button>
+
     <GuestList></GuestList>
   `;
+  $party.querySelector(".delete-btn").addEventListener("click", () => {
+    deleteParty(selectedParty.id);
+  });
+
   $party.querySelector("GuestList").replaceWith(GuestList());
 
   return $party;
@@ -156,69 +163,69 @@ function GuestList() {
   );
 
   /** === Form for adding a new party === */
-function PartyForm() {
-  const $section = document.createElement("section");
+  function PartyForm() {
+    const $section = document.createElement("section");
 
-  const $h2 = document.createElement("h2");
-  $h2.textContent = "Add a new party";
-  $section.appendChild($h2);
+    const $h2 = document.createElement("h2");
+    $h2.textContent = "Add a new party";
+    $section.appendChild($h2);
 
-  const $form = document.createElement("form");
+    const $form = document.createElement("form");
 
-  // Name
-  const nameInput = document.createElement("input");
-  nameInput.placeholder = "Name";
-  nameInput.required = true;
-  $form.appendChild(nameInput);
+    // Name
+    const nameInput = document.createElement("input");
+    nameInput.placeholder = "Name";
+    nameInput.required = true;
+    $form.appendChild(nameInput);
 
-  // Description
-  const descInput = document.createElement("input");
-  descInput.placeholder = "Description";
-  descInput.required = true;
-  $form.appendChild(descInput);
+    // Description
+    const descInput = document.createElement("input");
+    descInput.placeholder = "Description";
+    descInput.required = true;
+    $form.appendChild(descInput);
 
-  // Date
-  const dateInput = document.createElement("input");
-  dateInput.type = "date";
-  dateInput.required = true;
-  $form.appendChild(dateInput);
+    // Date
+    const dateInput = document.createElement("input");
+    dateInput.type = "date";
+    dateInput.required = true;
+    $form.appendChild(dateInput);
 
-  // Location
-  const locInput = document.createElement("input");
-  locInput.placeholder = "Location";
-  locInput.required = true;
-  $form.appendChild(locInput);
+    // Location
+    const locInput = document.createElement("input");
+    locInput.placeholder = "Location";
+    locInput.required = true;
+    $form.appendChild(locInput);
 
-  // Button
-  const btn = document.createElement("button");
-  btn.type = "submit";
-  btn.textContent = "Add party";
-  $form.appendChild(btn);
+    // Button
+    const btn = document.createElement("button");
+    btn.type = "submit";
+    btn.textContent = "Add party";
+    $form.appendChild(btn);
 
-  // Submit handler
-  $form.addEventListener("submit", (e) => {
-    e.preventDefault();
+    // Submit handler
+    $form.addEventListener("submit", (e) => {
+      e.preventDefault();
 
-    const isoDate = new Date(dateInput.value).toISOString();
+      const isoDate = new Date(dateInput.value).toISOString();
 
-    const newParty = {
-      name: nameInput.value,
-      description: descInput.value,
-      date: isoDate,
-      location: locInput.value,
-    };
+      const newParty = {
+        name: nameInput.value,
+        description: descInput.value,
+        date: isoDate,
+        location: locInput.value,
+      };
 
-    createParty(newParty);
+      createParty(newParty);
 
-    nameInput.value = "";
-    descInput.value = "";
-    dateInput.value = "";
-    locInput.value = "";
-  });
+      nameInput.value = "";
+      descInput.value = "";
+      dateInput.value = "";
+      locInput.value = "";
+    });
 
-  $section.appendChild($form);
-  return $section;
-}
+    $section.appendChild($form);
+    return $section;
+  }
 
   // Simple components can also be created anonymously:
   const $guests = guestsAtParty.map((guest) => {
@@ -240,6 +247,7 @@ function render() {
       <section>
         <h2>Upcoming Parties</h2>
         <PartyList></PartyList>
+        <PartyForm></PartyForm>
       </section>
       <section id="selected">
         <h2>Party Details</h2>
@@ -250,6 +258,7 @@ function render() {
 
   $app.querySelector("PartyList").replaceWith(PartyList());
   $app.querySelector("SelectedParty").replaceWith(SelectedParty());
+  $app.querySelector("PartyForm").replaceWith(PartyForm());
 }
 
 async function init() {
