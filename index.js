@@ -46,6 +46,44 @@ async function getRsvps() {
 }
 
 /** Updates state with all guests from the API */
+/** === Create a new party via POST === */
+async function createParty(party) {
+  try {
+    const response = await fetch(API + "/events", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(party),
+    });
+    const result = await response.json();
+    const newParty = result.data;
+
+    parties.push(newParty);
+    selectedParty = newParty;
+    render();
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+/** === Delete a party via DELETE === */
+async function deleteParty(id) {
+  try {
+    await fetch(API + "/events/" + id, {
+      method: "DELETE",
+    });
+
+    parties = parties.filter((party) => party.id !== id);
+
+    if (selectedParty && selectedParty.id === id) {
+      selectedParty = parties[0] || null;
+    }
+
+    render();
+  } catch (e) {
+    console.error(e);
+  }
+}
+
 async function getGuests() {
   try {
     const response = await fetch(API + "/guests");
